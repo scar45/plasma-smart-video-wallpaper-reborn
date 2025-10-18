@@ -75,8 +75,9 @@ WallpaperItem {
         }
         return play;
     }
+    property bool sessionInactive: !sessionModel.sessionIsActive
     property bool playing: {
-        return ((shouldPlay && !batteryPausesVideo && !screenLocked && !screenIsOff && !effectPauseVideo) || effectPlayVideo) && videosConfig.length !== 0;
+        return ((shouldPlay && !batteryPausesVideo && !screenLocked && !screenIsOff && !sessionInactive && !effectPauseVideo) || effectPlayVideo) && videosConfig.length !== 0;
     }
     property bool shouldBlur: {
         if (videosConfig.length == 0) {
@@ -222,6 +223,12 @@ WallpaperItem {
         checkScreenLock: !main.lockScreenMode
         checkScreenState: main.screenOffPausesVideo && screenStateCmd !== ""
         screenStateCmd: main.configuration.ScreenStateCmd
+    }
+
+    SessionModel {
+        id: sessionModel
+        checkSessionActivity: true
+        debugEnabled: main.debugEnabled
     }
 
     EffectsModel {
@@ -390,6 +397,7 @@ WallpaperItem {
             printLog("Videos: '" + JSON.stringify(videosConfig) + "'");
             printLog("Pause Battery: " + pauseBatteryLevel + "% " + pauseBattery);
             printLog("Pause Screen Off: " + screenOffPausesVideo + " Off: " + screenIsOff);
+            printLog("Pause Session Inactive: " + sessionInactive);
             printLog("Windows: " + main.shouldPlay + " Blur: " + main.showBlur);
             printLog("Video playing: " + playing + " Blur: " + showBlur);
         }
@@ -425,6 +433,21 @@ WallpaperItem {
             // https://github.com/KDE/plasma-desktop/blob/Plasma/6.3/desktoppackage/contents/views/Desktop.qml
             // https://github.com/KDE/plasma-desktop/blob/Plasma/6.3/desktoppackage/contents/lockscreen/LockScreen.qml
             main.lockScreenMode = "source" in window && window.source.toString().endsWith("LockScreen.qml");
+
+            // Connect to visibility changes to refresh session state
+            if (window && "onActiveChanged" in window) {
+                window.onActiveChanged.connect(() => {
+                    if (window.active) {
+                        sessionModel.refresh();
+                    }
+                });
+            }
+        }
+    }
+
+    onVisibleChanged: {
+        if (visible) {
+            sessionModel.refresh();
         }
     }
 
