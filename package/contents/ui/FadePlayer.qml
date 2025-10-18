@@ -108,6 +108,7 @@ Item {
         opacity: 1
         fillMode: root.fillMode
         useMpvQt: root.useMpvQt
+        randomPosition: root.randomPosition
         loops: {
             if (!root.multipleVideos || (root.currentSource.loop && !root.crossfadeEnabled))
                 return MediaPlayer.Infinite;
@@ -134,6 +135,7 @@ Item {
                 }
             }
         }
+        property bool needsRandomSeek: false
         onMediaStatusChanged: {
             if (mediaStatus == MediaPlayer.EndOfMedia) {
                 if (root.crossfadeEnabled) {
@@ -146,10 +148,17 @@ Item {
             if (mediaStatus == MediaPlayer.LoadedMedia && seekable) {
                 // Handle random position
                 if (root.randomPosition) {
-                    const randomPos = Math.floor(Math.random() * duration);
-                    videoPlayer1.setPosition(randomPos);
-                    root.restoreLastPosition = false;
-                    return;
+                    if (duration > 0) {
+                        const randomPos = Math.floor(Math.random() * duration);
+                        videoPlayer1.setPosition(randomPos);
+                        root.restoreLastPosition = false;
+                        return;
+                    } else {
+                        // Duration not available yet (MpvQt), wait for onDurationChanged
+                        needsRandomSeek = true;
+                        root.restoreLastPosition = false;
+                        return;
+                    }
                 }
 
                 // Handle restore last position
@@ -169,6 +178,13 @@ Item {
                 videoPlayer1.stop();
                 videoPlayer1.play();
                 videoPlayer1.position = pos;
+            }
+        }
+        onDurationChanged: {
+            if (needsRandomSeek && duration > 0) {
+                needsRandomSeek = false;
+                const randomPos = Math.floor(Math.random() * duration);
+                videoPlayer1.setPosition(randomPos);
             }
         }
         onPlayingChanged: {
@@ -205,6 +221,7 @@ Item {
         z: 1
         fillMode: root.fillMode
         useMpvQt: root.useMpvQt
+        randomPosition: root.randomPosition
         loops: {
             if (!root.multipleVideos || (root.currentSource.loop && !root.crossfadeEnabled))
                 return MediaPlayer.Infinite;
@@ -247,15 +264,26 @@ Item {
                 videoPlayer2.position = pos;
             }
         }
+        property bool needsRandomSeek: false
         onMediaStatusChanged: {
-            if (mediaStatus == MediaPlayer.EndOfMedia) {
-                if (root.crossfadeEnabled)
-                    return;
-                if (root.slideshowEnabled) {
-                    root.setNextSource();
+            if (mediaStatus == MediaPlayer.LoadedMedia && seekable) {
+                // Handle random position
+                if (root.randomPosition) {
+                    if (duration > 0) {
+                        const randomPos = Math.floor(Math.random() * duration);
+                        videoPlayer2.setPosition(randomPos);
+                    } else {
+                        // Duration not available yet (MpvQt), wait for onDurationChanged
+                        needsRandomSeek = true;
+                    }
                 }
-                videoPlayer2.playerSource = root.currentSource;
-                videoPlayer2.play();
+            }
+        }
+        onDurationChanged: {
+            if (needsRandomSeek && duration > 0) {
+                needsRandomSeek = false;
+                const randomPos = Math.floor(Math.random() * duration);
+                videoPlayer2.setPosition(randomPos);
             }
         }
         onPlayingChanged: {
