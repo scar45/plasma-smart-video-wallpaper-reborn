@@ -1,13 +1,11 @@
 import QtQuick
-import QtQuick.Layouts
 import QtMultimedia
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.kirigami as Kirigami
 import "code/utils.js" as Utils
+import "code/enum.js" as Enum
 
 Item {
     id: root
-    property var currentSource
+    property var currentSource: Utils.createVideo("")
     property real volume: 1.0
     property bool muted: true
     property real playbackRate: 1
@@ -19,19 +17,36 @@ Item {
     property bool restoreLastPosition: true
     property bool randomPosition: false
     property bool debugEnabled: false
-    property bool slideshowEnabled: true
-    property bool disableCrossfade: false
-    property int position
+    property int changeWallpaperMode: Enum.ChangeWallpaperMode.Slideshow
+    property int changeWallpaperTimerSeconds: 0
+    property int changeWallpaperTimerMinutes: 10
+    property int changeWallpaperTimerHours: 0
+    property int changeWallpaperTimerMs: ((changeWallpaperTimerHours * 60 * 60) + (changeWallpaperTimerMinutes * 60) + changeWallpaperTimerSeconds) * 1000
+    property bool resumeLastVideo: true
     property bool useMpvQt: false
 
     // Crossfade must not be longer than the shortest video or the fade becomes glitchy
     // we don't know the length until a video gets played, so the crossfade duration
     // will decrease below the configured duration if needed as videos get played
-    property int crossfadeMinDuration: parseInt(Math.max(Math.min(videoPlayer1.actualDuration, videoPlayer2.actualDuration) / 3, 1))
-    property int crossfadeDuration: disableCrossfade ? 0 : Math.min(root.targetCrossfadeDuration, crossfadeMinDuration)
+    // Split the crossfade duration between the two videos. If either video is too short,
+    // reduce only it's part of the crossfade duration accordingly
+    property int crossfadeMinDurationLast: Math.min(root.targetCrossfadeDuration / 2, otherPlayer.actualDuration / 3)
+    property int crossfadeMinDurationCurrent: Math.min(root.targetCrossfadeDuration / 2, player.actualDuration / 3)
+    property int crossfadeDuration: {
+        if (!root.crossfadeEnabled) {
+            return 0;
+        } else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.OnATimer) {
+            return Math.min(root.targetCrossfadeDuration, changeWallpaperTimerMs / 3 * 2);
+        } else {
+            return crossfadeMinDurationLast + crossfadeMinDurationCurrent;
+        }
+    }
 
     property bool primaryPlayer: true
     property VideoPlayer player: primaryPlayer ? videoPlayer1 : videoPlayer2
+    property VideoPlayer otherPlayer: primaryPlayer ? videoPlayer2 : videoPlayer1
+    property VideoPlayer player1: videoPlayer1
+    property VideoPlayer player2: videoPlayer2
 
     function play() {
         player.play();
@@ -42,34 +57,42 @@ Item {
     function stop() {
         player.stop();
     }
-    function next(switchSource, fade) {
-        if (switchSource) {
+    function next(switchSource, forceSwitch) {
+        if ((switchSource && !currentSource.loop) || forceSwitch) {
             setNextSource();
         }
-        if (fade) {
-            if (primaryPlayer) {
-                videoPlayer1.opacity = 0;
-                videoPlayer2.playerSource = root.currentSource;
-                videoPlayer2.play();
-                root.primaryPlayer = false;
-            } else {
-                videoPlayer1.opacity = 1;
-                videoPlayer1.playerSource = root.currentSource;
-                videoPlayer1.play();
-                root.primaryPlayer = true;
-            }
+        if (primaryPlayer) {
+            videoPlayer2.playerSource = root.currentSource;
+            videoPlayer2.play();
+            root.primaryPlayer = false;
+            videoPlayer1.opacity = 0;
         } else {
-            primaryPlayer = true;
-            root.disableCrossfade = true;
-            videoPlayer2.stop();
-            videoPlayer1.stop();
             videoPlayer1.playerSource = root.currentSource;
-            videoPlayer1.opacity = 1;
             videoPlayer1.play();
-            root.disableCrossfade = false;
+            root.primaryPlayer = true;
+            videoPlayer1.opacity = 1;
         }
     }
     signal setNextSource
+
+    PausableTimer {
+        id: changeTimer
+        running: root.changeWallpaperMode === Enum.ChangeWallpaperMode.OnATimer && root.player.playing
+        interval: root.changeWallpaperTimerMs - (root.crossfadeEnabled ? root.crossfadeMinDurationCurrent : 0)
+        repeat: true
+        useNewIntervalImmediately: true
+        onTriggered: {
+            if (root.debugEnabled) {
+                console.log("Timer triggered, changing wallpaper");
+            }
+            root.next(true);
+        }
+        onIntervalChanged: {
+            if (root.debugEnabled) {
+                console.log("Timer changed:", interval);
+            }
+        }
+    }
 
     VideoPlayer {
         id: videoPlayer1
@@ -86,13 +109,12 @@ Item {
         fillMode: root.fillMode
         useMpvQt: root.useMpvQt
         loops: {
-            if (!root.slideshowEnabled) {
+            if (!root.multipleVideos || (root.currentSource.loop && !root.crossfadeEnabled))
                 return MediaPlayer.Infinite;
-            }
-            if (root.multipleVideos || root.crossfadeEnabled) {
+            else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow)
                 return 1;
-            }
-            return MediaPlayer.Infinite;
+            else
+                return MediaPlayer.Infinite;
         }
         onPositionChanged: {
             if (!root.primaryPlayer) {
@@ -102,27 +124,23 @@ Item {
                 root.lastVideoPosition = position;
             }
 
-            if ((position / playbackRate) > (actualDuration - root.crossfadeDuration)) {
-                if (root.crossfadeEnabled) {
-                    if (root.slideshowEnabled) {
-                        root.setNextSource();
+            if (root.crossfadeEnabled) {
+                if ((position / playbackRate) > (actualDuration - root.crossfadeMinDurationCurrent)) {
+                    if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow) {
+                        root.next(true);
+                    } else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Never) {
+                        root.next(false);
                     }
-                    if (root.debugEnabled) {
-                        console.log("player1 fading out");
-                    }
-                    root.next(false, true);
                 }
             }
         }
         onMediaStatusChanged: {
             if (mediaStatus == MediaPlayer.EndOfMedia) {
-                if (root.crossfadeEnabled)
+                if (root.crossfadeEnabled) {
                     return;
-                if (root.slideshowEnabled) {
-                    root.setNextSource();
+                } else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow) {
+                    root.next(true);
                 }
-                videoPlayer1.playerSource = root.currentSource;
-                videoPlayer1.play();
             }
 
             if (mediaStatus == MediaPlayer.LoadedMedia && seekable) {
@@ -130,27 +148,40 @@ Item {
                 if (root.randomPosition) {
                     const randomPos = Math.floor(Math.random() * duration);
                     videoPlayer1.setPosition(randomPos);
+                    root.restoreLastPosition = false;
                     return;
                 }
 
                 // Handle restore last position
-                if (!root.restoreLastPosition)
-                    return;
-                if (root.lastVideoPosition < duration) {
-                    console.error("RESTORE LAST POSITION:", root.lastVideoPosition);
-                    videoPlayer1.setPosition(root.lastVideoPosition);
+                if (root.restoreLastPosition && root.resumeLastVideo) {
+                    if (root.lastVideoPosition < duration) {
+                        console.error("RESTORE LAST POSITION:", root.lastVideoPosition);
+                        videoPlayer1.setPosition(root.lastVideoPosition);
+                    }
                 }
                 root.restoreLastPosition = false;
             }
         }
+        onLoopsChanged: {
+            if (primaryPlayer) {
+                // needed to correctly update player with new loops value
+                let pos = videoPlayer1.position;
+                videoPlayer1.stop();
+                videoPlayer1.play();
+                videoPlayer1.position = pos;
+            }
+        }
         onPlayingChanged: {
             if (playing) {
-                if (videoPlayer1.opacity === 0) {
-                    opacity = 1;
-                }
                 if (root.debugEnabled) {
                     console.log("Player 1 playing");
                 }
+            }
+        }
+        onOpacityChanged: {
+            if (opacity === 0 || opacity === 1) {
+                // Reset other player source to empty to free resources
+                otherPlayer.playerSource = Utils.createVideo("");
             }
         }
         Behavior on opacity {
@@ -173,22 +204,47 @@ Item {
         muted: root.muted
         z: 1
         fillMode: root.fillMode
-        loops: 1
         useMpvQt: root.useMpvQt
+        loops: {
+            if (!root.multipleVideos || (root.currentSource.loop && !root.crossfadeEnabled))
+                return MediaPlayer.Infinite;
+            else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow)
+                return 1;
+            else
+                return MediaPlayer.Infinite;
+        }
         onPositionChanged: {
             if (root.primaryPlayer) {
                 return;
             }
             root.lastVideoPosition = position;
 
-            if ((position / playbackRate) > (actualDuration - root.crossfadeDuration)) {
-                if (root.debugEnabled) {
-                    console.log("player1 fading in");
+            if (root.crossfadeEnabled) {
+                if ((position / playbackRate) > (actualDuration - root.crossfadeMinDurationCurrent)) {
+                    if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow) {
+                        root.next(true);
+                    } else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Never) {
+                        root.next(false);
+                    }
                 }
-                if (root.slideshowEnabled) {
-                    root.setNextSource();
+            }
+        }
+        onMediaStatusChanged: {
+            if (mediaStatus == MediaPlayer.EndOfMedia) {
+                if (root.crossfadeEnabled) {
+                    return;
+                } else if (root.changeWallpaperMode === Enum.ChangeWallpaperMode.Slideshow) {
+                    root.next(true);
                 }
-                root.next(false, true);
+            }
+        }
+        onLoopsChanged: {
+            if (!primaryPlayer) {
+                // needed to correctly update player with new loops value
+                let pos = videoPlayer2.position;
+                videoPlayer2.stop();
+                videoPlayer2.play();
+                videoPlayer2.position = pos;
             }
         }
         onMediaStatusChanged: {
@@ -203,49 +259,9 @@ Item {
             }
         }
         onPlayingChanged: {
-            if (playing && root.debugEnabled) {
-                console.log("player2 playing");
-            }
-        }
-    }
-
-    ColumnLayout {
-        visible: root.debugEnabled
-        z: 2
-        Item {
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 100
-        }
-        Kirigami.AbstractCard {
-            Layout.margins: Kirigami.Units.largeSpacing
-            contentItem: ColumnLayout {
-                id: content
-                PlasmaComponents.Label {
-                    text: root.player.source
-                }
-                PlasmaComponents.Label {
-                    text: "slideshow " + root.slideshowEnabled
-                }
-                PlasmaComponents.Label {
-                    text: "crossfade " + root.crossfadeEnabled
-                }
-                PlasmaComponents.Label {
-                    text: "multipleVideos " + root.multipleVideos
-                }
-                PlasmaComponents.Label {
-                    text: "player " + root.player.objectName
-                }
-                PlasmaComponents.Label {
-                    text: "media status " + root.player.mediaStatus
-                }
-                PlasmaComponents.Label {
-                    text: "playing " + root.player.playing
-                }
-                PlasmaComponents.Label {
-                    text: "position " + root.player.position
-                }
-                PlasmaComponents.Label {
-                    text: "duration " + root.player.duration
+            if (playing) {
+                if (root.debugEnabled) {
+                    console.log("Player 2 playing");
                 }
             }
         }

@@ -1,5 +1,100 @@
 # Changelog
 
+## [2.8.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.7.1...v2.8.0) (2025-12-10)
+
+
+### Features
+
+* add seconds picker to timed wallpaper change ([528fe0a](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/528fe0afeb397a813b808f538bb980cf36b91b17))
+
+
+### Bug Fixes
+
+* timer restarts on video pause ([552e4ab](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/552e4ab10719d976cfe87acd9362460a197f4c68))
+
+## [2.7.1](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.7.0...v2.7.1) (2025-12-03)
+
+
+### Bug Fixes
+
+* disabled videos continue playing after pause/play event ([76d7373](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/76d737351981fab5953ca2e4451575b80134b45c))
+* video incorretly unpauses when timer ends ([7edfbd4](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/7edfbd46f8ed699b2f8b9aeed9b30748f54a2180))
+
+## [2.7.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.6.0...v2.7.0) (2025-11-21)
+
+
+### Features
+
+* drag and drop to add files ([c84397f](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/c84397f15bfecd3fb6ae12053c64090c41ef0f64))
+* open containing folder from videos list ([d023f6a](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/d023f6ad6c97f81589c12d9eb77e0a10191f5751))
+* play single file only (disable all others) ([d4ef482](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/d4ef48285d00384a20b1e3058066dfdcec1e8796))
+* preview files in default application ([a563319](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/a56331936b12fdbd940e34041447d4281d780ebe))
+* quick actions to disable/enable/remove/toggle videos ([f68e593](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/f68e59313fcdf853659804ed72d13898582b2e09))
+* use a list view to manage the videos ([6cc1105](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/6cc11053a481e72e6043c957ccef357a9d5432e9))
+
+## [2.6.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.5.1...v2.6.0) (2025-11-15)
+
+
+### Features
+
+* clarify how to use 'Next video' option in video settings dialog ([e566f03](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/e566f034c3f507e0e0565cbd2fb96e7a85710950))
+
+
+### Bug Fixes
+
+* old video keeps playing when switching to another single video ([74b1c0e](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/74b1c0e6c5ee1f0ff44fd550add83282002853d9))
+
+## [2.5.1](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.5.0...v2.5.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* debug info always visible ([51365b3](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/51365b3ede4f881b33e577cc93a34625b0ebc569))
+
+## [2.5.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.4.0...v2.5.0) (2025-11-06)
+
+
+### Features
+
+* allow to replace videos in the list ([af49f21](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/af49f2171eae62a2f478481a35c9924f0a6e530a))
+
+
+### Bug Fixes
+
+* blur stacking order and disable when there are no videos ([00c78f3](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/00c78f39faea5ebad7d5afc41b0b61e10e25d7bf))
+* Lockscreen crash when using gstreamer ([#172](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/172)) ([20a8469](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/20a8469cdc1e3199b9f0aadc300206bfb78dbff6))
+
+## [2.4.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.3.2...v2.4.0) (2025-10-31)
+
+
+### Features
+
+* add GIF format to the file picker ([8f0fa92](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/8f0fa92112548ce20f5093d39038ebf5c73a5877))
+* allow to disable resuming last playing video on startup ([9d30331](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/9d30331ac804859f0635f2383642ce46e33c3032))
+* allow to loop specific videos until manual skip ([dde9a80](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/dde9a80930ddad600865313475c2ff304b3fe066))
+* switch videos only after a global fixed duration  ([#163](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/163)) ([9706d35](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/9706d35d537c58f9d2fea2c5ba66eddaaccf49eb))
+
+
+### Bug Fixes
+
+* first video not random ([824aa46](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/824aa46683bf9156583064f8c60827d5915470d9))
+
+## [2.3.2](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.3.1...v2.3.2) (2025-06-20)
+
+
+### Bug Fixes
+
+* check empty callback in DBusFallBack ([07ef926](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/07ef926b6d65ffd859799bc8d30cd498c8472bb5))
+
+## [2.3.1](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.3.0...v2.3.1) (2025-06-15)
+
+
+### Bug Fixes
+
+* make gdbus fallback actually work ([7154ff4](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/7154ff4a23b70f56696d23cb9f9a4b9cff905c26))
+* undefined and invalid global property errors ([1108dc0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/1108dc0a995695f2507681827834472317136de8))
+* unfiltered video config on startup ([eda0786](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/eda07864bfa1a817d3fe345f134c57f08976e143))
+
 ## [2.3.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.2.0...v2.3.0) (2025-04-30)
 
 
