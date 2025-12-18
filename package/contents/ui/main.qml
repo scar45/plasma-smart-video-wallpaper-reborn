@@ -311,6 +311,7 @@ WallpaperItem {
                 contentItem: PlasmaComponents.Label {
                     text: {
                         let text = `filename: ${main.currentSource.filename}\n`;
+                        text += `backend: ${main.configuration.UseMpvQt ? "MpvQt" : "Qt Multimedia"}\n`;
                         text += `loops: ${main.currentSource.loop ?? false}\n`;
                         text += `currentVideoIndex ${main.currentVideoIndex}\n`;
                         text += `changeWallpaperMode ${main.changeWallpaperMode}\n`;
@@ -414,7 +415,7 @@ WallpaperItem {
 
         // If random position is enabled, don't restore saved position
         if (main.configuration.RandomPosition) {
-            restoreLastPosition = false;
+            player.restoreLastPosition = false;
         }
 
         startTimer.start();

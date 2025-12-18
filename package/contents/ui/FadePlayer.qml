@@ -246,6 +246,7 @@ Item {
                 }
             }
         }
+        property bool needsRandomSeek: false
         onMediaStatusChanged: {
             if (mediaStatus == MediaPlayer.EndOfMedia) {
                 if (root.crossfadeEnabled) {
@@ -254,18 +255,6 @@ Item {
                     root.next(true);
                 }
             }
-        }
-        onLoopsChanged: {
-            if (!primaryPlayer) {
-                // needed to correctly update player with new loops value
-                let pos = videoPlayer2.position;
-                videoPlayer2.stop();
-                videoPlayer2.play();
-                videoPlayer2.position = pos;
-            }
-        }
-        property bool needsRandomSeek: false
-        onMediaStatusChanged: {
             if (mediaStatus == MediaPlayer.LoadedMedia && seekable) {
                 // Handle random position
                 if (root.randomPosition) {
@@ -277,6 +266,15 @@ Item {
                         needsRandomSeek = true;
                     }
                 }
+            }
+        }
+        onLoopsChanged: {
+            if (!primaryPlayer) {
+                // needed to correctly update player with new loops value
+                let pos = videoPlayer2.position;
+                videoPlayer2.stop();
+                videoPlayer2.play();
+                videoPlayer2.position = pos;
             }
         }
         onDurationChanged: {
