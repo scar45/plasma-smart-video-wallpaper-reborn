@@ -39,7 +39,10 @@ Item {
     }
 
     function getSessionPath() {
-        runCommand.run("loginctl show-user $USER -p Display --value");
+        // Parse session ID from loginctl session-status - works in kscreenlocker
+        // where $USER may not be set. Uses process's session context directly.
+        // Note: 2>/dev/null suppresses stderr, it's not a session ID
+        runCommand.run("loginctl session-status 2>/dev/null | head -1 | awk '{print $1}'");
     }
 
     RunCommand {
