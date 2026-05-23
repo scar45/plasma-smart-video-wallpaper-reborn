@@ -289,7 +289,7 @@ ColumnLayout {
                     icon.name: "view-readermode-symbolic"
                     text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Qt Media backend instructions")
                     onTriggered: {
-                        Qt.openUrlExternally("https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#black-video-or-plasma-crashes");
+                        Qt.openUrlExternally("https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#black-video-or-plasma-crashes");
                     }
                 }
             ]
@@ -304,7 +304,7 @@ ColumnLayout {
                     icon.name: "view-readermode-symbolic"
                     text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Learn how")
                     onTriggered: {
-                        Qt.openUrlExternally("https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration");
+                        Qt.openUrlExternally("https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration");
                     }
                 }
             ]
@@ -487,7 +487,7 @@ ColumnLayout {
                     icon.name: "view-readermode-symbolic"
                     text: "Plugin install instructions"
                     onTriggered: {
-                        Qt.openUrlExternally("https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#manually-from-source");
+                        Qt.openUrlExternally("https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#manually-from-source");
                     }
                 }
             ]

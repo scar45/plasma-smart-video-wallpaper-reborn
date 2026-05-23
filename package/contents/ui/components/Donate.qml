@@ -86,7 +86,7 @@ ColumnLayout {
                 {
                     label: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Star the project on GitHub"),
                     icon: Qt.resolvedUrl("../../icons/githubstar.svg"),
-                    url: "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn",
+                    url: "https://github.com/scar45/plasma-smart-video-wallpaper-reborn",
                     backgroundColor: "#29313C"
                 },
                 {

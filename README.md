@@ -115,7 +115,7 @@ git gcc cmake extra-cmake-modules libplasma qt6-multimedia qt6-multimedia-ffmpeg
 Clone and install
 
 ```sh
-git clone https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn
+git clone https://github.com/scar45/plasma-smart-video-wallpaper-reborn
 cd plasma-smart-video-wallpaper-reborn
 ./install.sh
 ```
@@ -215,7 +215,7 @@ then reboot or restart plasmashell `systemctl --user restart plasma-plasmashell.
 5. Get your system information from `kinfo > sysinfo.txt` command or from **System settings** > **About this System**
 6. Save the file from [here](https://gist.github.com/luisbocanegra/cb758ee5f57a9e7c2838b1db349b635a) as **test.qml**. Run the test qml with from terminal `QT_FFMPEG_DEBUG=1 QSG_INFO=1 QT_LOGGING_RULES="*.debug=true" qml6 test.qml 2> qml_video_test_log.txt`, (qml6 may be qml-qt6 or /usr/lib/qt6/bin/qml please confirm is qt6 one with --version) this file will play some public test videos from internet in fullscreen. If it doesn't crash immediately, try clicking the pause/next buttons a bunch of times.
 7. Run `lspci -k | grep -EA3 'VGA|3D|Display' > lspci.txt`
-8. Create a new [new issue](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/new) describing the problem and how to reproduce, and attach those files including wether running the **test.qml** also crashes or not.
+8. Create a new [new issue](https://github.com/scar45/plasma-smart-video-wallpaper-reborn/issues/new) describing the problem and how to reproduce, and attach those files including wether running the **test.qml** also crashes or not.
 
 ### Contributing Translations
 
