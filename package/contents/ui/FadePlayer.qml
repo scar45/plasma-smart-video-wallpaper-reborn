@@ -45,8 +45,8 @@ Item {
     property bool primaryPlayer: true
     property VideoPlayer player: primaryPlayer ? videoPlayer1 : videoPlayer2
     property VideoPlayer otherPlayer: primaryPlayer ? videoPlayer2 : videoPlayer1
-    property VideoPlayer player1: videoPlayer1
-    property VideoPlayer player2: videoPlayer2
+    readonly property alias player1: videoPlayer1
+    readonly property alias player2: videoPlayer2
 
     function play() {
         player.play();

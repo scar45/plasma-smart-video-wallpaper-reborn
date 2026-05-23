@@ -1,5 +1,74 @@
 # Changelog
 
+## [2.13.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.12.0...v2.13.0) (2026-04-02)
+
+
+### Features
+
+* add Japanese Translation ([#260](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/260)) ([c65bb5b](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/c65bb5b0301db7aa561544f8f53feba5f920be55))
+
+
+### Bug Fixes
+
+* sync context menu play/pause state ([d51ec64](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/d51ec64c3a86a6f6089dac10abe180afd76d0b8d))
+
+## [2.12.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.11.0...v2.12.0) (2026-03-21)
+
+
+### Features
+
+* add simplified Chinese translation ([#250](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/250)) ([e83c594](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/e83c594f3e3987e9729b5e1c122e5257877e8c8d))
+
+## [2.11.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.10.0...v2.11.0) (2026-03-08)
+
+
+### Features
+
+* manual audio device selector ([#237](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/237)) ([3df152f](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/3df152f779745db25acb8240881ba3db4631a7a6))
+* update Dutch translation ([#234](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/234)) ([eb9e98b](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/eb9e98bbacd2af647dca1aee5b01510be18f1ead))
+
+## [2.10.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.9.0...v2.10.0) (2026-02-10)
+
+
+### Features
+
+* add kscreen-doctor to screen off detection command ([8aa0bf4](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/8aa0bf45c3fd8d00ad436107511325197ff6681f))
+* alternative playback speed ([73fc437](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/73fc437a281549feb16eb66276f2227afc01c9b3))
+* update Spanish translation ([e05aff8](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/e05aff8d54cf301d6fef4a87457cd6ae19796abd))
+
+
+### Bug Fixes
+
+* add domain to translatable strings ([41dbc0a](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/41dbc0abcd49af3e28d603c6efa023b7e9b37e1f))
+* add missing executable permission in install.sh ([9bbb71f](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/9bbb71f1b4982bf4d8848447f1ed13867a8bf995))
+* inform about KDE Store version removal on install.sh ([aff251a](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/aff251a7089cb9856611963b3c0c1a15a03263fe))
+* limit minimum playback speed to 0.01 ([9acb60d](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/9acb60da9f5e316a052a25b5300a15f3e312082e))
+* race condition in screen state monitoring ([aa9b3d5](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/aa9b3d55f8b9b5dbd4c2271530449e0089b24e65))
+* recover command ([06923ba](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/06923ba7bedc6e02461d7c65b67d4a96b49f72a4))
+* remove url from translatable string ([7776f49](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/7776f49de5d15c163206f861909c6276bc3e753e))
+* stop dbus signal monitor when switching to other wallpaper plugin ([4602b65](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/4602b65586ed602b1ba316841886a7cb5d7424d4))
+* stuttering due to unique commands in executable datasource ([cf101b5](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/cf101b552fc0b647fc277ddc554918c7167f8dc3))
+
+## [2.9.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.8.1...v2.9.0) (2026-01-13)
+
+
+### Features
+
+* fill background with blur when using Keep Proportions positioning ([7e952c9](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/7e952c91098592a3c5fc4529c62f86d184a1f3a1))
+* misc settings UI adjustments ([1fb5146](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/1fb5146a74add9c389c4804832418f63f7d60fdd))
+
+
+### Bug Fixes
+
+* version fetching in wallpaper settings ([5059bd8](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/5059bd8857c8d81a23eed128275fb6e1cf751733))
+
+## [2.8.1](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.8.0...v2.8.1) (2025-12-26)
+
+
+### Bug Fixes
+
+* extra comma in desktop effects text field ([7a510ce](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/commit/7a510cec0e67d4dea667b1a66a12d3fdb4ef2c78))
+
 ## [2.8.0](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/compare/v2.7.1...v2.8.0) (2025-12-10)
 
 

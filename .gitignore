@@ -6,3 +6,4 @@ build/
 playground/
 .cache/
 *.mo
+*.tar.gz

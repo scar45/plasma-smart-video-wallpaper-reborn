@@ -1,5 +1,6 @@
 import QtQuick
 import QtMultimedia
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: root

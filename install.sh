@@ -1,16 +1,25 @@
 #!/bin/sh
+
+set -e
+
+if [ "$(whoami)" = root ];
+then
+    echo "Please do not run this script as root or using sudo"
+    exit 1
+fi
+
 if [ -d "build" ]; then
     rm -rf build
 fi
 
-# Install wallpaper for current user
-cmake -B build/wallpaper -S . -DINSTALL_WALLPAPER=ON -DCMAKE_INSTALL_PREFIX="$HOME/.local"
-cmake --build build/wallpaper
-cmake --install build/wallpaper
-# CMakeLists.txt plasma_install_package does't copy executable permission
-chmod 700 "$HOME/.local/share/plasma/wallpapers/luisbocanegra.smart.video.wallpaper.reborn/contents/ui/tools/gdbus_get_signal.sh"
+# install wallpaper + plugin system-wide
+cmake -B build -S . -DBUILD_PLUGIN=ON
+cmake --build build
+sudo cmake --install build
+# CMakeLists.txt plasma_install_package doesn't copy executable permission
+sudo chmod 755 "/usr/share/plasma/wallpapers/luisbocanegra.smart.video.wallpaper.reborn/contents/ui/tools/gdbus_get_signal.sh"
 
-# Install plugin system-wide (required for qml modules)
-cmake -B build/plugin -S . -DBUILD_PLUGIN=ON -DCMAKE_INSTALL_PREFIX=/usr
-cmake --build build/plugin
-sudo cmake --install build/plugin
+# remove KDE Store / kpackagetool6 install so it doesn't override the system-wide one
+echo "Removing previous install (if exists) from $HOME/.local/share/plasma/wallpapers/"
+rm -r "$HOME/.local/share/plasma/wallpapers/luisbocanegra.smart.video.wallpaper.reborn/" 2>/dev/null || true
+echo "Done"
