@@ -5,7 +5,7 @@ import "../"
 
 RowLayout {
     id: root
-    readonly property string ghUser: "luisbocanegra"
+    readonly property string ghUser: "scar45"
     readonly property string projectName: "plasma-smart-video-wallpaper-reborn"
     readonly property string ghRepo: "https://github.com/" + ghUser + "/" + projectName
     readonly property string kofi: "https://ko-fi.com/luisbocanegra"

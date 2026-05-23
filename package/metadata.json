@@ -11,19 +11,23 @@
             },
             {
                 "Name": "adhe"
+            },
+            {
+                "Email": "george@merloc.co",
+                "Name": "George Merlocco"
             }
         ],
-        "BugReportUrl": "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues",
+        "BugReportUrl": "https://github.com/scar45/plasma-smart-video-wallpaper-reborn/issues",
         "Category": "",
         "Description": "Wallpaper plugin to play videos on your desktop",
         "Icon": "preferences-desktop-wallpaper",
         "Id": "luisbocanegra.smart.video.wallpaper.reborn",
         "License": "GPLv2+",
-        "Name": "Smart Video Wallpaper Reborn",
-        "Name[zh_CN]": "智能视频壁纸",
-        "Name[ja]": "スマートビデオ壁紙",
-        "Version": "2.13.0",
-        "Website": "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn"
+        "Name": "Smart Video Wallpaper Reborn (MpvQt)",
+        "Name[zh_CN]": "智能视频壁纸 (MpvQt)",
+        "Name[ja]": "スマートビデオ壁紙 (MpvQt)",
+        "Version": "2.13.0-mpvqt",
+        "Website": "https://github.com/scar45/plasma-smart-video-wallpaper-reborn"
     },
     "Keywords": [
         "video",
