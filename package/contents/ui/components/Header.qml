@@ -7,7 +7,7 @@ RowLayout {
     id: root
     readonly property string ghUser: "luisbocanegra"
     readonly property string projectName: "plasma-smart-video-wallpaper-reborn"
-    readonly property string ghRepo: "https://github.com/" + ghUser + "/" + projectName
+    readonly property string ghRepo: "https://github.com/scar45/" + projectName
     readonly property string kofi: "https://ko-fi.com/luisbocanegra"
     readonly property string paypal: "https://www.paypal.com/donate/?hosted_button_id=Y5TMH3Z4YZRDA"
     readonly property string email: "mailto:luisbocanegra17b@gmail.com"

@@ -31,6 +31,8 @@ StackView {
     property bool shouldPlay: true
     property int loops: MediaPlayer.Infinite
     property bool disableAudioOutput: false
+    property bool randomPosition: false
+    property bool useMpvQt: false
 
     property list<var> propertiesMonitor: [currentSource, globalVolume, muted, fillMode, targetCrossfadeDuration, changeWallpaperMode, fillBlurRadius, fillBlur, audioOutputDevice, crossfadeEnabled, debugEnabled, useAlternativePlaybackRate, alternativePlaybackRateGlobal, globalPlaybackRate, audioFadeInOutDuration, loadAheadTime, disableAudioOutput]
 
@@ -105,7 +107,9 @@ StackView {
             "parent": root,
             "implicitWidth": root.width,
             "implicitHeight": root.height,
-            "visible": false,
+            // MpvQt only loads once rendered, keep it behind the current video instead
+            "visible": root.useMpvQt,
+            "z": root.useMpvQt ? -1 : 0,
             "fillMode": root.fillMode,
             "muted": root.muted,
             "audioOutputDevice": root.audioOutputDevice,
@@ -117,6 +121,8 @@ StackView {
             "changeWallpaperMode": root.changeWallpaperMode,
             "shouldPlay": Qt.binding(() => root.shouldPlay),
             "lastVideoPosition": root.resumeLastVideo && root._restoreLastPosition ? root.lastVideoPosition : 0,
+            "randomPosition": root.randomPosition,
+            "useMpvQt": root.useMpvQt,
             "debugEnabled": root.debugEnabled,
             "audioFadeInOutDuration": root.audioFadeInOutDuration,
             "loadAheadTime": root.loadAheadTime,
@@ -153,6 +159,7 @@ StackView {
         }
         root._restoreLastPosition = false;
         pendingVideo.mediaStatusChanged.disconnect(replaceWhenLoaded);
+        pendingVideo.z = 0;
 
         // onRemoved only fires when all transitions end. If a user switches wallpaper quickly this adds up
         // Given it's such a heavy item, try to cleanup as early as possible
@@ -180,6 +187,12 @@ StackView {
         PauseAnimation {
             // 500: The exit transition starts first and can be completed earlier than the enter transition
             duration: replaceEnterOpacityAnimator.duration + 500
+        }
+    }
+
+    onUseMpvQtChanged: {
+        if (root.currentSource?.filename && root.currentItem?.useMpvQt !== root.useMpvQt) {
+            root.loadVideo();
         }
     }
 

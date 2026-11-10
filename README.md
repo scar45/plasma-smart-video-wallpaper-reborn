@@ -134,13 +134,13 @@ Use dnf to install plasma-smart-video-wallpaper-reborn: `sudo dnf in plasma-smar
 Install these dependencies or the equivalents for your distribution
 
 ```txt
-git gcc cmake extra-cmake-modules libplasma qt6-multimedia qt6-multimedia-ffmpeg
+git gcc cmake extra-cmake-modules libplasma qt6-multimedia qt6-multimedia-ffmpeg mpvqt
 ```
 
 Clone and install
 
 ```sh
-git clone https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn
+git clone https://github.com/scar45/plasma-smart-video-wallpaper-reborn
 cd plasma-smart-video-wallpaper-reborn
 ./install.sh
 ```
@@ -323,7 +323,7 @@ Switch to GStreamer as Qt Media backend
     The test file play some public test videos from internet. If it doesn't fail immediately, try clicking the pause/next buttons a bunch of times.
 
 7. Run `lspci -k | grep -EA3 'VGA|3D|Display' > lspci.txt`
-8. Create a new [new issue](https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn/issues/new) describing the problem and how to reproduce, provide the requested information and the `qml_video_test_log.txt`, `journal.txt`, `dmesg.txt` files
+8. Create a new [new issue](https://github.com/scar45/plasma-smart-video-wallpaper-reborn/issues/new) describing the problem and how to reproduce, provide the requested information and the `qml_video_test_log.txt`, `journal.txt`, `dmesg.txt` files
 
 ### Contributing Translations
 

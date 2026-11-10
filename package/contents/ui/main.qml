@@ -100,8 +100,9 @@ WallpaperItem {
         }
         return !pause;
     }
+    readonly property bool sessionIsActive: sessionModel.sessionIsActive
     property bool playing: {
-        return ((shouldPlay && !batteryPausesVideo && !screenLocked && !screenIsOff && !effectPauseVideo && isCurrentActivity) || effectPlayVideo) && hasVideos;
+        return ((shouldPlay && !batteryPausesVideo && !screenLocked && !screenIsOff && !effectPauseVideo && isCurrentActivity && sessionIsActive) || effectPlayVideo) && hasVideos;
     }
     property bool shouldBlur: {
         if (!hasVideos) {
@@ -262,6 +263,10 @@ WallpaperItem {
         instanceId: Plasmoid.id ?? ""
     }
 
+    SessionModel {
+        id: sessionModel
+    }
+
     EffectsModel {
         id: effectsModel
         monitorActive: {
@@ -340,6 +345,8 @@ WallpaperItem {
             muted: main.muteAudio
             disableAudioOutput: main.configuration.MuteMode === Enum.MuteMode.Always
             lastVideoPosition: main.configuration.LastVideoPosition
+            randomPosition: main.configuration.RandomPosition
+            useMpvQt: main.configuration.UseMpvQt
             visible: videosCount !== 0
             onSetNextSource: {
                 printLog("main.player.onSetNextSource");
@@ -410,6 +417,7 @@ WallpaperItem {
                     Layout.margins: Kirigami.Units.largeSpacing
                     text: {
                         let text = `player.filename: ${player.player.playerSource.filename}\n`;
+                        text += `backend: ${player.useMpvQt ? "MpvQt" : "Qt Multimedia"}\n`;
                         text += `main.currentSource.filename: ${main.currentSource.filename}\n`;
                         text += `videos:\n${main.videosConfig.map(v => {
                             const filenameParts = v.filename.split("/");
@@ -528,6 +536,7 @@ WallpaperItem {
         printLog("Videos: '" + JSON.stringify(videosConfig) + "'");
     }
     onShouldPlayChanged: logShouldPlay()
+    onSessionIsActiveChanged: printLog("Session active: " + sessionIsActive)
     onPlayingChanged: printLog("Video playing: " + playing)
     onShowBlurChanged: printLog("Blur: " + showBlur)
     onCurrentSourceChanged: {

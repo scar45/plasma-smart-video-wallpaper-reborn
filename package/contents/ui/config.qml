@@ -80,6 +80,8 @@ ColumnLayout {
     property alias cfg_DayNightCycleTransitionDuration: dayNightCycleTransitionDuration.value
     property alias cfg_RandomMode: randomModeCheckbox.checked
     property alias cfg_ResumeLastVideo: resumeLastVideoCheckbox.checked
+    property alias cfg_RandomPosition: randomPositionCheckbox.checked
+    property alias cfg_UseMpvQt: useMpvQtCheckbox.checked
     property alias cfg_ChangeWallpaperTimerSeconds: wallpaperTimerSeconds.value
     property alias cfg_ChangeWallpaperTimerMinutes: wallpaperTimerMinutes.value
     property alias cfg_ChangeWallpaperTimerHours: wallpaperTimerHours.value
@@ -395,7 +397,7 @@ ColumnLayout {
                     icon.name: "view-readermode-symbolic"
                     text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Qt Media backend instructions")
                     onTriggered: {
-                        Qt.openUrlExternally("https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#black-video-or-plasma-crashes");
+                        Qt.openUrlExternally("https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#black-video-or-plasma-crashes");
                     }
                 }
             ]
@@ -410,7 +412,7 @@ ColumnLayout {
                     icon.name: "view-readermode-symbolic"
                     text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Learn how")
                     onTriggered: {
-                        Qt.openUrlExternally("https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration");
+                        Qt.openUrlExternally("https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration");
                     }
                 }
             ]
@@ -749,6 +751,23 @@ ColumnLayout {
             id: resumeLastVideoCheckbox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Resume last video on startup:")
             visible: root.currentTab === 1
+        }
+
+        CheckBox {
+            id: randomPositionCheckbox
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Random start position:")
+            visible: root.currentTab === 1
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Use MpvQt:")
+            visible: root.currentTab === 1
+            CheckBox {
+                id: useMpvQtCheckbox
+            }
+            Kirigami.ContextualHelpButton {
+                toolTipText: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "Play videos using libmpv with hardware decoding instead of Qt Multimedia.<br><br>Fill blur and audio device selection are not supported with this player.")
+            }
         }
 
         RowLayout {
@@ -1245,7 +1264,7 @@ ColumnLayout {
             spacing: Kirigami.Units.largeSpacing
             Label {
                 visible: root.currentTab === 3
-                text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "See <a href=\"%1\">Improve performance by enabling Hardware Video Acceleration</a> for how to enable and verify if it's working.", "https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration")
+                text: i18nd("plasma_wallpaper_luisbocanegra.smart.video.wallpaper.reborn", "See <a href=\"%1\">Improve performance by enabling Hardware Video Acceleration</a> for how to enable and verify if it's working.", "https://github.com/scar45/plasma-smart-video-wallpaper-reborn?tab=readme-ov-file#improve-performance-by-enabling-hardware-video-acceleration")
                 Layout.preferredWidth: 650
                 wrapMode: Label.WordWrap
                 onLinkActivated: link => Qt.openUrlExternally(link)

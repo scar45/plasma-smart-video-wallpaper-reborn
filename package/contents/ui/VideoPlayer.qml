@@ -38,6 +38,8 @@ Item {
     property bool firstFrame: true
     property bool shouldPlay: false
     property int lastVideoPosition: 0
+    property bool randomPosition: false
+    property bool useMpvQt: false
     property bool debugEnabled: false
     readonly property var creationDate: Date.now()
     property int loadingTime: 0
@@ -86,7 +88,7 @@ Item {
     readonly property alias videoHeight: videoOutput.contentRect.height
     readonly property alias videoWidth: videoOutput.contentRect.width
     readonly property int remaining: duration - position
-    readonly property bool showFillBlur: root.fillBlur && root.fitScale !== 1
+    readonly property bool showFillBlur: root.fillBlur && root.fitScale !== 1 && !root.useMpvQt
     readonly property string currentAudioDevice: audioOutput.device ? audioOutput.device.description : i18n("Unknown")
     readonly property alias volume: audioOutput.volume
     readonly property real fitScale: {
@@ -154,10 +156,13 @@ Item {
     property bool ending: false
     signal aboutToFinish
 
-    MediaPlayer {
+    PlayerBackend {
         id: player
+        anchors.fill: parent
+        useMpvQt: root.useMpvQt
         videoOutput: videoOutput
-        audioOutput: root.disableAudioOutput ? null : audioOutput
+        audioOutput: audioOutput
+        disableAudioOutput: root.disableAudioOutput
         source: root.playerSource?.filename ?? ""
         playbackRate: root.playbackRate
         autoPlay: true
@@ -199,11 +204,14 @@ Item {
             }
 
             if (mediaStatus === MediaPlayer.LoadedMedia && seekable) {
-                if (root.lastVideoPosition && root.lastVideoPosition < duration) {
+                if (root.randomPosition) {
+                    const endMargin = Math.max(root.crossfadeDuration, root.loadAheadTime);
+                    setPosition(Math.floor(Math.random() * Math.max(duration - endMargin, 0)));
+                } else if (root.lastVideoPosition && root.lastVideoPosition < duration) {
                     if (root.debugEnabled) {
                         console.log("RESTORE LAST POSITION:", root.lastVideoPosition);
                     }
-                    position = root.lastVideoPosition;
+                    setPosition(root.lastVideoPosition);
                 }
             }
 
@@ -213,7 +221,7 @@ Item {
             }
         }
 
-        onPositionChanged: position => {
+        onPositionChanged: {
             if (root.firstFrame && position > 0) {
                 root.firstFrame = false;
                 updatePlaybackStateTimer.start();

@@ -196,5 +196,13 @@
     <entry name="LoadAheadTime" type="Int">
       <default>1000</default>
     </entry>
+    <entry name="RandomPosition" type="Bool">
+      <label>Start videos from a random position</label>
+      <default>false</default>
+    </entry>
+    <entry name="UseMpvQt" type="Bool">
+      <label>Play videos using MpvQt instead of Qt Multimedia</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>
